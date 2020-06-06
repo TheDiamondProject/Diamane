@@ -36,9 +36,14 @@ diamane::graphics::scene::scene(const std::string &name)
 
 // MARK: - Physics / Update Loop
 
+auto diamane::graphics::scene::update_handler(std::function<auto()->void> handler) -> void
+{
+    m_update_handler = handler;
+}
+
 auto diamane::graphics::scene::update() -> void
 {
-
+    m_update_handler();
 }
 
 // MARK: - Rendering
@@ -85,3 +90,11 @@ auto diamane::graphics::scene::texture(const std::string& name) -> std::weak_ptr
     }
     return m_textures.at(name);
 }
+
+// MARK: - Events
+
+auto diamane::graphics::scene::key(event::keycode code, event::key_state state) const -> bool
+{
+    return false;
+}
+

@@ -162,3 +162,24 @@ auto diamane::graphics::opengl::context::begin_scene(const std::string &name) ->
     m_scenes.emplace_back(scene);
     return scene;
 }
+
+// MARK: - Input Processing
+
+auto diamane::graphics::opengl::context::key(event::keycode code, event::key_state state) const -> bool
+{
+    int input_state = glfwGetKey(m_window, code);
+
+    switch (input_state) {
+        case GLFW_PRESS:
+            return state == event::pressed;
+
+        case GLFW_REPEAT:
+            return state == event::held;
+
+        case GLFW_RELEASE:
+            return state == event::released;
+
+        default:
+            return false;
+    }
+}

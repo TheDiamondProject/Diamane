@@ -41,7 +41,7 @@ diamane::graphics::opengl::scene::scene(opengl::context& context, const std::str
 
 auto diamane::graphics::opengl::scene::update() -> void
 {
-
+    graphics::scene::update();
 }
 
 auto diamane::graphics::opengl::scene::render() -> void
@@ -72,4 +72,11 @@ auto diamane::graphics::opengl::scene::create_texture(const std::string &name, c
     auto texture = std::make_shared<opengl::texture>(sz, data);
     m_textures.emplace(name, texture);
     return texture;
+}
+
+// MARK: - Events / Input Processing
+
+auto diamane::graphics::opengl::scene::key(event::keycode code, event::key_state state) const -> bool
+{
+    return m_context.key(code, state);
 }

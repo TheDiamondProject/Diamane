@@ -25,8 +25,10 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 #include "libDiamane/graphics/common/sprite.hpp"
 #include "libDiamane/graphics/common/texture.hpp"
+#include "libDiamane/application/events/keyboard.hpp"
 
 namespace diamane { namespace graphics {
 
@@ -36,6 +38,7 @@ namespace diamane { namespace graphics {
         std::string m_name;
         std::map<std::string, std::shared_ptr<graphics::sprite>> m_sprites;
         std::map<std::string, std::shared_ptr<graphics::texture>> m_textures;
+        std::function<auto()->void> m_update_handler;
 
     public:
         scene();
@@ -51,6 +54,9 @@ namespace diamane { namespace graphics {
         virtual auto create_texture(const std::string& name, const math::size& sz, std::vector<uint32_t> data) -> std::weak_ptr<graphics::texture> { };
         virtual auto texture(const std::string& name) -> std::weak_ptr<graphics::texture>;
 
+        virtual auto update_handler(std::function<auto()->void> handler) -> void;
+
+        virtual auto key(event::keycode code, event::key_state state) const -> bool;
     };
 
 }};

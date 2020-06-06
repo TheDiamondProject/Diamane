@@ -40,6 +40,8 @@ namespace diamane { namespace graphics { namespace opengl {
         auto render() -> void override;
 
         auto create_texture(const std::string &name, const math::size &sz, std::vector<uint32_t> data) -> std::weak_ptr<graphics::texture> override;
+
+        auto key(event::keycode code, event::key_state state) const -> bool override;
     };
 
 }}};

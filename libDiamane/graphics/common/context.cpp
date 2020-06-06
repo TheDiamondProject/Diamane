@@ -34,11 +34,10 @@ auto diamane::graphics::context::tick() -> void
 
     while (m_accumulator >= m_delta) {
         update();
+        render();
         m_time += m_delta;
         m_accumulator -= m_delta;
     }
-
-    render();
 }
 
 // MARK: - Scene Management
@@ -77,4 +76,11 @@ auto diamane::graphics::context::render() -> void
     if (auto scene = current_scene().lock()) {
         scene->render();
     }
+}
+
+// MARK: - Input Processing
+
+auto diamane::graphics::context::key(event::keycode code, event::key_state state) const -> bool
+{
+    return false;
 }
