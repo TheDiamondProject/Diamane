@@ -18,30 +18,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#if !defined(DIAMANE_OPENGL_SCENE_HPP)
-#define DIAMANE_OPENGL_SCENE_HPP
+#include "libDiamane/application/events/keyboard.hpp"
 
-#include <memory>
-#include "libDiamane/graphics/common/scene.hpp"
-#include "libDiamane/graphics/opengl/opengl_context.hpp"
+// MARK: - Construction
 
-namespace diamane { namespace graphics { namespace opengl {
+diamane::event::key::key(const enum key::code& code, const int& scancode, const enum key::state& state)
+    : m_keycode(code), m_scancode(scancode), m_state(state)
+{
 
-    class scene : public graphics::scene
-    {
-    private:
-        opengl::context& m_context;
+}
 
-    public:
-        scene(opengl::context& context);
-        scene(opengl::context& context, const std::string& name);
+// MARK: - Accessors
 
-        auto update() -> void override;
-        auto render() -> void override;
+auto diamane::event::key::code() const -> enum key::code
+{
+    return m_keycode;
+};
 
-        auto create_texture(const std::string &name, const math::size &sz, std::vector<uint32_t> data) -> std::weak_ptr<graphics::texture> override;
-    };
+auto diamane::event::key::modifiers() const -> enum key::modifier
+{
+    return m_modifiers;
+};
 
-}}};
+auto diamane::event::key::state() const -> enum key::state
+{
+    return m_state;
+};
 
-#endif //DIAMANE_OPENGL_SCENE_HPP
+auto diamane::event::key::scancode() const -> int
+{
+    return m_scancode;
+}

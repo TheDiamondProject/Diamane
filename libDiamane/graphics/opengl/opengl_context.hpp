@@ -62,8 +62,6 @@ namespace diamane { namespace graphics { namespace opengl {
 
         auto renderer() const -> std::optional<opengl::sprite_renderer>;
         auto flush() const -> void;
-
-        auto key(event::keycode code, event::key_state state) const -> bool override;
     };
 
 }}};

@@ -77,10 +77,3 @@ auto diamane::graphics::context::render() -> void
         scene->render();
     }
 }
-
-// MARK: - Input Processing
-
-auto diamane::graphics::context::key(event::keycode code, event::key_state state) const -> bool
-{
-    return false;
-}

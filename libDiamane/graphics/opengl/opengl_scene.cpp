@@ -73,10 +73,3 @@ auto diamane::graphics::opengl::scene::create_texture(const std::string &name, c
     m_textures.emplace(name, texture);
     return texture;
 }
-
-// MARK: - Events / Input Processing
-
-auto diamane::graphics::opengl::scene::key(event::keycode code, event::key_state state) const -> bool
-{
-    return m_context.key(code, state);
-}

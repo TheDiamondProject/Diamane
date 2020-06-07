@@ -96,7 +96,7 @@ diamane::graphics::opengl::context::context()
     glfwSetCursorPosCallback(m_window, [] (GLFWwindow *wnd, double x, double y) {
         auto context = diamane::application::shared().current_context();
         if (auto scene = context->current_scene().lock()) {
-            scene->send_mouse_event(event::mouse(x, y, event::mouse::moved));
+            scene->send_event(event::mouse(x, y, event::mouse::moved));
         }
     });
 
@@ -110,12 +110,12 @@ diamane::graphics::opengl::context::context()
             switch (action) {
                 case GLFW_PRESS: {
                     event::mouse e(x, y, event::mouse::pressed, static_cast<enum event::mouse::button>(button));
-                    scene->send_mouse_event(e);
+                    scene->send_event(e);
                     break;
                 }
                 case GLFW_RELEASE: {
                     event::mouse e(x, y, event::mouse::released, static_cast<enum event::mouse::button>(button));
-                    scene->send_mouse_event(e);
+                    scene->send_event(e);
                     break;
                 }
             }
@@ -124,7 +124,26 @@ diamane::graphics::opengl::context::context()
     });
 
     glfwSetKeyCallback(m_window, [] (GLFWwindow *wnd, int key, int scancode, int action, int mods) {
-
+        auto context = diamane::application::shared().current_context();
+        if (auto scene = context->current_scene().lock()) {
+            switch (action) {
+                case GLFW_PRESS: {
+                    event::key e(static_cast<enum event::key::code>(key), scancode, event::key::pressed);
+                    scene->send_event(e);
+                    break;
+                }
+                case GLFW_RELEASE: {
+                    event::key e(static_cast<enum event::key::code>(key), scancode, event::key::released);
+                    scene->send_event(e);
+                    break;
+                }
+                case GLFW_REPEAT: {
+                    event::key e(static_cast<enum event::key::code>(key), scancode, event::key::held);
+                    scene->send_event(e);
+                    break;
+                }
+            }
+        }
     });
 
     m_running = true;
@@ -203,25 +222,4 @@ auto diamane::graphics::opengl::context::begin_scene(const std::string &name) ->
     auto scene = std::make_shared<opengl::scene>(*this, name);
     m_scenes.emplace_back(scene);
     return scene;
-}
-
-// MARK: - Input Processing
-
-auto diamane::graphics::opengl::context::key(event::keycode code, event::key_state state) const -> bool
-{
-    int input_state = glfwGetKey(m_window, code);
-
-    switch (input_state) {
-        case GLFW_PRESS:
-            return state == event::pressed;
-
-        case GLFW_REPEAT:
-            return state == event::held;
-
-        case GLFW_RELEASE:
-            return state == event::released;
-
-        default:
-            return false;
-    }
 }

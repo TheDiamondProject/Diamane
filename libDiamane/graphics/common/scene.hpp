@@ -41,6 +41,7 @@ namespace diamane { namespace graphics {
         std::map<std::string, std::shared_ptr<graphics::texture>> m_textures;
         std::function<auto()->void> m_update_handler;
         std::function<auto(event::mouse)->void> m_mouse_event;
+        std::function<auto(event::key)->void> m_key_event;
 
     public:
         scene();
@@ -53,15 +54,17 @@ namespace diamane { namespace graphics {
         virtual auto sprite(const std::string& name) -> std::weak_ptr<graphics::sprite>;
 
         virtual auto create_texture(const std::string& name, const math::size& sz) -> std::weak_ptr<graphics::texture>;
-        virtual auto create_texture(const std::string& name, const math::size& sz, std::vector<uint32_t> data) -> std::weak_ptr<graphics::texture> { };
+        virtual auto create_texture(const std::string& name, const math::size& sz, std::vector<uint32_t> data) -> std::weak_ptr<graphics::texture> { return {}; };
         virtual auto texture(const std::string& name) -> std::weak_ptr<graphics::texture>;
 
         virtual auto update_handler(std::function<auto()->void> handler) -> void;
 
         virtual auto handle_mouse(std::function<auto(event::mouse)->void> handler) -> void;
-        auto send_mouse_event(const event::mouse& event) const -> void;
+        auto send_event(const event::mouse& event) const -> void;
 
-        virtual auto key(event::keycode code, event::key_state state) const -> bool;
+        virtual auto handle_key(std::function<auto(event::key)->void> handler) -> void;
+        auto send_event(const event::key& event) const -> void;
+
     };
 
 }};

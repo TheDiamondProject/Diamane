@@ -43,7 +43,9 @@ auto diamane::graphics::scene::update_handler(std::function<auto()->void> handle
 
 auto diamane::graphics::scene::update() -> void
 {
-    m_update_handler();
+    if (m_update_handler) {
+        m_update_handler();
+    }
 }
 
 // MARK: - Rendering
@@ -93,20 +95,22 @@ auto diamane::graphics::scene::texture(const std::string& name) -> std::weak_ptr
 
 // MARK: - Events
 
-auto diamane::graphics::scene::key(event::keycode code, event::key_state state) const -> bool
-{
-    return false;
-}
-
 auto diamane::graphics::scene::handle_mouse(std::function<auto(event::mouse)->void> handler) -> void
 {
     m_mouse_event = handler;
 }
 
-auto diamane::graphics::scene::send_mouse_event(const diamane::event::mouse &event) const -> void
+auto diamane::graphics::scene::send_event(const diamane::event::mouse &event) const -> void
 {
     m_mouse_event(event);
 }
 
+auto diamane::graphics::scene::handle_key(std::function<auto(event::key)->void> handler) -> void
+{
+    m_key_event = handler;
+}
 
-
+auto diamane::graphics::scene::send_event(const diamane::event::key &event) const -> void
+{
+    m_key_event(event);
+}

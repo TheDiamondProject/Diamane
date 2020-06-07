@@ -58,8 +58,6 @@ namespace diamane { namespace graphics {
         virtual auto tick() -> void;
         virtual auto update() -> void;
         virtual auto render() -> void;
-
-        virtual auto key(event::keycode code, event::key_state state) const -> bool;
     };
 
 }};

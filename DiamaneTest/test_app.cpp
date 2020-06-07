@@ -17,19 +17,19 @@ int main(int argc, char const *argv[])
             auto sprite = scene->spawn_sprite("square", {100, 100}, {100, 100});
             sprite.lock()->set_texture(scene->create_texture("blank", { 100, 100 }));
 
-            scene->update_handler([sprite, scene] {
-
-                if (scene->key(diamane::event::keycode::d, diamane::event::key_state::pressed)) {
-                    auto pos = sprite.lock()->origin();
-                    pos.set_x(pos.x() + 1);
-                    sprite.lock()->set_origin(pos);
-                }
-
-            });
 
             scene->handle_mouse([sprite] (diamane::event::mouse mouse) {
                 if (mouse.action() != diamane::event::mouse::action::moved) {
                     sprite.lock()->set_origin({ mouse.x(), mouse.y() });
+                }
+            });
+
+            scene->handle_key([sprite] (diamane::event::key key) {
+                if (key.state() == diamane::event::key::held && key.code() == diamane::event::key::code::equal) {
+                    auto sz = sprite.lock()->size();
+                    sz.set_width(sz.width() + 1);
+                    sz.set_height(sz.height() + 1);
+                    sprite.lock()->set_size(sz);
                 }
             });
 		}
