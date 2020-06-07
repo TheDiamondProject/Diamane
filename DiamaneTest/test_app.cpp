@@ -26,6 +26,12 @@ int main(int argc, char const *argv[])
                 }
 
             });
+
+            scene->handle_mouse([sprite] (diamane::event::mouse mouse) {
+                if (mouse.action() != diamane::event::mouse::action::moved) {
+                    sprite.lock()->set_origin({ mouse.x(), mouse.y() });
+                }
+            });
 		}
 
 	});

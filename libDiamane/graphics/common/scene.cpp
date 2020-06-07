@@ -98,3 +98,15 @@ auto diamane::graphics::scene::key(event::keycode code, event::key_state state) 
     return false;
 }
 
+auto diamane::graphics::scene::handle_mouse(std::function<auto(event::mouse)->void> handler) -> void
+{
+    m_mouse_event = handler;
+}
+
+auto diamane::graphics::scene::send_mouse_event(const diamane::event::mouse &event) const -> void
+{
+    m_mouse_event(event);
+}
+
+
+

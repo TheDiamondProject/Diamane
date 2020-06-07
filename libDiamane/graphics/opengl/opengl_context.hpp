@@ -48,6 +48,8 @@ namespace diamane { namespace graphics { namespace opengl {
     public:
         context();
 
+        auto window() const -> GLFWwindow *;
+
         auto set_title(const std::string& title) -> void override;
         auto set_size(const double& width, const double& height) -> void override;
 

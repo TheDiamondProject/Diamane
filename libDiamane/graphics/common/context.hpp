@@ -25,6 +25,7 @@
 #include <memory>
 #include <chrono>
 #include <string>
+#include <functional>
 #include "libDiamane/graphics/common/scene.hpp"
 #include "libDiamane/application/events/keyboard.hpp"
 

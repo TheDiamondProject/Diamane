@@ -25,6 +25,7 @@
 #include "libDiamane/graphics/opengl/opengl_context.hpp"
 #include "libDiamane/graphics/opengl/opengl_texture.hpp"
 #include "libDiamane/graphics/opengl/opengl_scene.hpp"
+#include "libDiamane/application/application.hpp"
 
 // MARK: - Built-in Constants
 
@@ -91,6 +92,41 @@ diamane::graphics::opengl::context::context()
     // Configure the default sprite shader for the context.
     m_renderer = opengl::sprite_renderer(load_shader("sprite", sprite_vertex_shader_source, sprite_fragment_shader_source));
 
+    // Setup event handlers for the mouse and keyboard.
+    glfwSetCursorPosCallback(m_window, [] (GLFWwindow *wnd, double x, double y) {
+        auto context = diamane::application::shared().current_context();
+        if (auto scene = context->current_scene().lock()) {
+            scene->send_mouse_event(event::mouse(x, y, event::mouse::moved));
+        }
+    });
+
+    glfwSetMouseButtonCallback(m_window, [] (GLFWwindow *wnd, int button, int action, int mods) {
+        auto context = diamane::application::shared().current_context();
+
+        double x, y;
+        glfwGetCursorPos(wnd, &x, &y);
+
+        if (auto scene = context->current_scene().lock()) {
+            switch (action) {
+                case GLFW_PRESS: {
+                    event::mouse e(x, y, event::mouse::pressed, static_cast<enum event::mouse::button>(button));
+                    scene->send_mouse_event(e);
+                    break;
+                }
+                case GLFW_RELEASE: {
+                    event::mouse e(x, y, event::mouse::released, static_cast<enum event::mouse::button>(button));
+                    scene->send_mouse_event(e);
+                    break;
+                }
+            }
+
+        }
+    });
+
+    glfwSetKeyCallback(m_window, [] (GLFWwindow *wnd, int key, int scancode, int action, int mods) {
+
+    });
+
     m_running = true;
 }
 
@@ -117,6 +153,12 @@ auto diamane::graphics::opengl::context::set_size(const double &width, const dou
     configure_viewport(width, height);
 }
 
+// MARK: - Accessors
+
+auto diamane::graphics::opengl::context::window() const -> GLFWwindow *
+{
+    return m_window;
+}
 
 // MARK: - Runtime
 

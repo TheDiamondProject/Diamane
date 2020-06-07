@@ -29,6 +29,7 @@
 #include "libDiamane/graphics/common/sprite.hpp"
 #include "libDiamane/graphics/common/texture.hpp"
 #include "libDiamane/application/events/keyboard.hpp"
+#include "libDiamane/application/events/mouse.hpp"
 
 namespace diamane { namespace graphics {
 
@@ -39,6 +40,7 @@ namespace diamane { namespace graphics {
         std::map<std::string, std::shared_ptr<graphics::sprite>> m_sprites;
         std::map<std::string, std::shared_ptr<graphics::texture>> m_textures;
         std::function<auto()->void> m_update_handler;
+        std::function<auto(event::mouse)->void> m_mouse_event;
 
     public:
         scene();
@@ -55,6 +57,9 @@ namespace diamane { namespace graphics {
         virtual auto texture(const std::string& name) -> std::weak_ptr<graphics::texture>;
 
         virtual auto update_handler(std::function<auto()->void> handler) -> void;
+
+        virtual auto handle_mouse(std::function<auto(event::mouse)->void> handler) -> void;
+        auto send_mouse_event(const event::mouse& event) const -> void;
 
         virtual auto key(event::keycode code, event::key_state state) const -> bool;
     };
